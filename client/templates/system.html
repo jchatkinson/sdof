@@ -3,7 +3,28 @@ name: system
 url: /system/
 ---
 
-<div class="grid-container">
+<div class="grid-container" ng-controller="SystemPropCtrl">
   <h1>System Properties!</h1>
   <p class="lead">This is where we define the properties of the SDOF system</p>
+  <hr>
+   <form name="formSystemProperties" >
+		<div class="grid-block">
+			<div class="small-12 medium-6 grid-content">
+				<label>Period:
+					<span class="inline-label">
+					<input type="number" step="0.01" name="period" ng-model="system.period" min="0" required>
+					<span class="form-label">seconds (s)</span>
+				</label>				
+				<label>Damping:
+					<span class="inline-label">
+					<input type="number" step="0.1" name="damping" ng-model="system.damping" min="0" required>
+					<span class="form-label">percent (%)</span>
+				</label>
+			</div>
+			<div class="small-12 medium-6 grid-content">
+				<p>The period is {{ system.period }}</p>
+				<p>The damping ratio is {{ system.damping }}</p>
+			</div>
+		</div>
+	</form> 
 </div>

@@ -3,62 +3,43 @@ name: excitation
 url: /excitation/
 ---
 
-<div class="grid-container">
+<div class="grid-container" ng-controller="ExcitationCtrl">
   <h1>Excitation!</h1>
   <p class="lead">This is where we define the forcing function</p>
    <hr>
    <form>
-<label>
-Input Label
-<input placeholder="Text field" type="text">
-</label>
-<div class="grid-block">
-<div class="small-12 medium-6 grid-content">
-<label>
-Input Label
-<input placeholder="Text field" type="text">
-</label>
-</div>
-<div class="small-12 medium-6 grid-content">
-<label>Select Label</label>
-<select name="" id="">
-<option value="">Breakfast</option>
-<option value="">Bacon Pancakes</option>
-<option value="">Mountain Dew</option>
-<option value="">Scrambled eggs with grilled zucchini, spinach, leeks, roasted tomatoes and mozzarella</option>
-</select>
-</div>
-<div class="small-12 medium-6 grid-content">
-<label>
-Prefix/postfix
-<span class="inline-label">
-<span class="form-label">www.</span>
-<input type="text">
-<span class="form-label">.com</span>
-</span>
-</label>
-</div>
-<div class="small-12 medium-6 grid-content">
-<label>
-Search
-<span class="inline-label">
-<input placeholder="Search a thing" type="search">
-<a href="#" class="button">Search</a>
-</span>
-</label>
-</div>
-<div class="small-12 medium-6 grid-content">
-<label>Choose Your Favorite</label>
-<input name="pokemon" value="Red" id="pokemonRed" type="radio"><label for="pokemonRed">Red</label>
-<input name="pokemon" value="Blue" id="pokemonBlue" type="radio"><label for="pokemonBlue">Blue</label>
-</div>
-<div class="small-12 medium-6 grid-content">
-<label>Check these out</label>
-<input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
-<input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
-</div>
-</div>
-</form>
+		<div class="grid-block">
+			<div class="small-12 medium-6 grid-content">
+				<label>Type of Forcing Function
+					<select ng-model="myexcitation" ng-options="excitation for excitation in excitations"></select>
+				</label>
+				<br>
+				<p>Showing options for the "{{ myexcitation }}" forcing function</p>				
+				<!-- Based on selection, present different forms -->
+				<div ng-show="myexcitation==excitations[0]">
+				
+					<!-- Harmonic functions - Sine, Sawtooth, Square wave -->
+					<div ng-controller="HarmFunCtrl">
+						<label>Type of Forcing Function
+							<select ng-model="myharmfun" ng-options="harmfun.name as harmfun.fullname for harmfun in harmfuns"></select>
+						</label>
+					</div>
+					
+					
+					
+				</div>
+				<div ng-show="myexcitation==excitations[1]">
+				Implulse
+				</div>			
+				<div ng-show="myexcitation==excitations[2]">
+				File
+				</div>			
+			</div>
+		</div>
+		
+		
+		
+	</form> 
+	
 
-  
 </div>

@@ -16,7 +16,6 @@
 			damping: 5
 		};
 	}])  
-	
   .controller('ExcitationCtrl', ['$scope', function($scope) {
     $scope.excitations = [
     	'Harmonic',
@@ -25,7 +24,6 @@
       ];
     $scope.myexcitation = $scope.excitations[0]; // default to harmonic function
   }])
-  
   .controller('HarmFunCtrl', ['$scope', function($scope) {
     $scope.harmfuns = [
     	{name:'sine', fullname:'Sine Wave'},
@@ -35,7 +33,7 @@
     $scope.funT = 0.5;
     $scope.funA = 9.8; 
     $scope.funPh = 0;
-    $scope.myharmfun = $scope.harmfuns[0].name; // default to sine function
+    $scope.myharmfun = $scope.harmfuns[0]; // default to sine function
   }])  
   
   
