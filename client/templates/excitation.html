@@ -8,38 +8,46 @@ url: /excitation/
   <p class="lead">This is where we define the forcing function</p>
    <hr>
    <form>
+		<div>
+			<label>Type of Forcing Function
+				<select ng-model="myexcitation" ng-options="excitation for excitation in excitations"></select>
+			</label>
+			<br>
+			<p>Showing options for the "{{ myexcitation }}" forcing function</p>				
+			<!-- Based on selection, present different forms -->
+		</div>   
 		<div class="grid-block">
-			<div class="small-12 medium-6 grid-content">
-				<label>Type of Forcing Function
-					<select ng-model="myexcitation" ng-options="excitation for excitation in excitations"></select>
-				</label>
-				<br>
-				<p>Showing options for the "{{ myexcitation }}" forcing function</p>				
-				<!-- Based on selection, present different forms -->
-				<div ng-show="myexcitation==excitations[0]">
-				
+				<div class="small-12 medium-6 grid-content" ng-show="myexcitation==excitations[0]">
 					<!-- Harmonic functions - Sine, Sawtooth, Square wave -->
-					<div ng-controller="HarmFunCtrl">
 						<label>Type of Forcing Function
 							<select ng-model="myharmfun" ng-options="harmfun.name as harmfun.fullname for harmfun in harmfuns"></select>
 						</label>
-					</div>
-					
-					
-					
+						<label>Period:
+							<span class="inline-label">
+							<input type="number" step="any" name="period" ng-model="hfunT" min="0" required>
+							<span class="form-label">seconds (s)</span>
+						</label>				
+						<label>Amplitude:
+							<span class="inline-label">
+							<input type="number" step="any" name="amplitude" ng-model="hfunA" min="0" required>
+							<span class="form-label">(m / s<sup>2</sup>)</span>
+						</label>
 				</div>
-				<div ng-show="myexcitation==excitations[1]">
-				Implulse
+				
+				<div class="small-12 medium-6 grid-content" ng-show="myexcitation==excitations[1]">
+					Implulse
+					<p>TODO</p>
 				</div>			
-				<div ng-show="myexcitation==excitations[2]">
-				File
-				</div>			
+				<div class="small-12 medium-6 grid-content" ng-show="myexcitation==excitations[2]">
+					File
+					<p>TODO</p>
+				</div>
+				
+				<!-- Preview of the forcing function-->
+				<div class="small-12 medium-6 grid-content" >
+				 [Preview will be here]
+				</div>
+							
 			</div>
-		</div>
-		
-		
-		
 	</form> 
-	
-
 </div>

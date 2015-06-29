@@ -13,7 +13,7 @@
   <body>
     <div class="grid-frame vertical">
       <div class="grid-content shrink" style="padding: 0;">
-        <ul class="primary condense menu-bar">
+        <ul class="dark condense menu-bar">
           <li><a ui-sref="home"><strong>SDOF</strong></a></li>
     		 <li ui-sref-active="is-active"><a ui-sref="excitation">Excitation</a></li>
     		 <li ui-sref-active="is-active"><a ui-sref="system">System</a></li>
