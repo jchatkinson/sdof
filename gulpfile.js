@@ -44,7 +44,9 @@ var paths = {
   ],
   // These files are for your app's JavaScript
   appJS: [
-    'client/assets/js/app.js'
+    'client/assets/js/app.js',
+    'bower_components/Chart.js/Chart.min.js',
+    'bower_components/angular-chart.js/dist/angular-chart.min.js'
   ]
 }
 
@@ -140,6 +142,13 @@ gulp.task('uglify:app', function() {
     .pipe(gulp.dest('./build/assets/js/'))
   ;
 });
+
+// Copies the listed js files in paths.otherJS
+//gulp.task('copy', function() {
+//  gulp.src(paths.otherJS)
+//    .pipe(gulp.dest('build/assets/js'))
+//    ;
+//});
 
 // Starts a test server, which you can view at http://localhost:8080
 gulp.task('server', ['build'], function() {
