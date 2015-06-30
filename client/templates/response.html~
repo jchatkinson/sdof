@@ -1,10 +1,30 @@
 ---
 name: response
 url: /response/
-title="System Response"
 ---
 
-<div class="grid-container">
-  <h1>System Response!</h1>
-  <p class="lead">This is where we show the response of the SDOF system</p>
+<div class="grid-container" ng-controller="ResponseCtrl as response">
+  <h1>System Response</h1>
+	  <p class="lead">
+	  	This is the response of the SDOF system with T={{ response.mydata.period | number}} 
+	  	and &zeta;={{ response.mydata.damping | number }}%:
+	  </p>
+	<div class="vertical grid-block">
+		<div class="grid-content">
+			<h4>Displacement Response</h4>
+			<p>[Graph Here]</p>
+		</div>
+		<div class="grid-content">
+			<h4>Velocity Response</h4>
+			<p>[Graph Here]</p>	
+		</div>
+		<div class="grid-content">
+			<h4>Acceleration Response</h4>
+			<p>[Graph Here]</p>	
+		</div>
+		<div class="grid-content">
+			<h4>Forcing Function</h4>
+			<p>[Graph Here]</p>
+		</div>
+	</div>
 </div>

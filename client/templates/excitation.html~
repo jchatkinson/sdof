@@ -32,18 +32,30 @@ url: /excitation/
 							<input type="number" step="any" name="amplitude" ng-model="hfunA" min="0" required>
 							<span class="form-label">(m / s<sup>2</sup>)</span>
 						</label>
+						<label>Time Step:
+							<span class="inline-label">
+							<input type="number" step="0.01" name="timestep" ng-model="hfundt" min="0.01" required>
+							<span class="form-label">seconds (s)</span>
+						</label>
+						<label>Total Time:
+							<span class="inline-label">
+							<input type="number" step="any" name="totalTime" ng-model="hfunTtotal" min="0.01" required>
+							<span class="form-label">seconds (s)</span>
+						</label>
 				</div>
 				
 				<div class="small-12 medium-6 grid-content" ng-show="myexcitation==excitations[1]">
 					Implulse
+					<p>TODO</p>
 				</div>			
 				<div class="small-12 medium-6 grid-content" ng-show="myexcitation==excitations[2]">
 					File
+					<p>TODO</p>
 				</div>
 				
 				<!-- Preview of the forcing function-->
-				<div class="small-12 medium-6 grid-content" >
-				 [Preview will be here]
+				<div class="small-12 medium-6 grid-content" ng-controller="LineCtrl">			
+					<linechart data="data" options="options" height="300"></linechart>
 				</div>
 							
 			</div>

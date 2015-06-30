@@ -18,6 +18,7 @@
     		 <li ui-sref-active="is-active"><a ui-sref="excitation">Excitation</a></li>
     		 <li ui-sref-active="is-active"><a ui-sref="system">System</a></li>
     		 <li ui-sref-active="is-active"><a ui-sref="response">Response</a></li>
+     		 <li ui-sref-active="is-active"><a ui-sref="about">About</a></li>
         </ul>
       </div>
       <div ui-view class="grid-content">

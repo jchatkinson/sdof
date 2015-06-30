@@ -24,7 +24,6 @@
   ],
   "dependencies": {
     "foundation-apps": "~1.1.0",
-    "Chart.js": "~1.0.2",
-    "angular-chart.js": "~0.7.2"
+    "n3-line-chart": "~1.1.9"
   }
 }

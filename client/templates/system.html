@@ -3,7 +3,7 @@ name: system
 url: /system/
 ---
 
-<div class="grid-container" ng-controller="SystemPropCtrl">
+<div class="grid-container" ng-controller="SystemPropCtrl as system">
   <h1>System Properties!</h1>
   <p class="lead">This is where we define the properties of the SDOF system</p>
   <hr>
@@ -12,19 +12,19 @@ url: /system/
 			<div class="small-12 medium-6 grid-content">
 				<label>Period:
 					<span class="inline-label">
-					<input type="number" step="0.01" name="period" ng-model="period" min="0" required>
+					<input type="number" step="0.01" name="period" ng-model="system.mydata.period" min="0" required>
 					<span class="form-label">seconds (s)</span>
 				</label>				
 				<label>Damping:
 					<span class="inline-label">
-					<input type="number" step="0.1" name="damping" ng-model="damping" min="0" required>
+					<input type="number" step="0.1" name="damping" ng-model="system.mydata.damping" min="0" required>
 					<span class="form-label">percent (%)</span>
 				</label>
 			</div>
 			<div class="small-12 medium-6 grid-content">
-				<p>The period is {{ period }}. This equates to a frequency (&fnof;) of {{}} and a circular
-				freqency (&omega;) of {{}}</p>
-				<p>The damping ratio (&zeta;) is {{ damping }}%</p>
+				<p>The period is {{ system.mydata.period | number }}. This equates to a frequency (&fnof;) of {{ system.f() | number }} and a circular
+				freqency (&omega;) of {{ system.w() | number }}</p>
+				<p>The damping ratio (&zeta;) is {{ system.mydata.damping | number }}%</p>
 			</div>
 		</div>
 	</form> 
