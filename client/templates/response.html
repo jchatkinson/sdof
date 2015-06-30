@@ -6,8 +6,8 @@ url: /response/
 <div class="grid-container" ng-controller="ResponseCtrl as response">
   <h1>System Response</h1>
 	  <p class="lead">
-	  	This is the response of the SDOF system with T={{ response.mydata.period | number}} 
-	  	and &zeta;={{ response.mydata.damping | number }}%:
+	  	This is the response of the SDOF system with T={{ ::response.mydata.period | number}} 
+	  	and &zeta;={{ ::response.mydata.damping | number }}%:
 	  </p>
 	<div class="vertical grid-block">
 		<div class="grid-content">

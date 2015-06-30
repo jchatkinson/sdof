@@ -17,13 +17,13 @@ url: /system/
 				</label>				
 				<label>Damping:
 					<span class="inline-label">
-					<input type="number" step="0.1" name="damping" ng-model="system.damping" min="0" required>
+					<input type="number" step="0.1" name="damping" ng-model="system.mydata.damping" min="0" required>
 					<span class="form-label">percent (%)</span>
 				</label>
 			</div>
 			<div class="small-12 medium-6 grid-content">
-				<p>The period is {{ system.mydata.period | number }}. This equates to a frequency (&fnof;) of {{ system.f() | number }} and a circular
-				freqency (&omega;) of {{ system.w() | number }}</p>
+				<p>The period is {{ ::system.mydata.period | number }}. This equates to a frequency (&fnof;) of {{ ::system.f() | number }} and a circular
+				freqency (&omega;) of {{ ::system.w() | number }}</p>
 				<p>The damping ratio (&zeta;) is {{ system.mydata.damping | number }}%</p>
 			</div>
 		</div>
