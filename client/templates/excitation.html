@@ -20,28 +20,38 @@ url: /excitation/
 				<div class="small-12 medium-6 grid-content" ng-show="excite.selectedfrcfun===excite.frcfuns[0].name">
 					<!-- Harmonic functions - Sine, Sawtooth, Square wave -->
 						<label>Type of Forcing Function
-							<select ng-model="excite.selectedharmfun" ng-options="harmfun.name as harmfun.fullname for harmfun in excite.harmfuns"></select>
+							<select ng-model="excite.mydata.myexcitefunc.selectedharmfun" ng-options="harmfun.name as harmfun.fullname for harmfun in excite.harmfuns"></select>
 						</label>
 						<label>Period:
 							<span class="inline-label">
-							<input type="number" step="any" name="period" ng-model="excite.T" min="0" required>
+							<input type="number" step="any" name="period" ng-model="excite.mydata.myexcitefunc.T" min="0" required>
 							<span class="form-label">seconds (s)</span>
 						</label>				
 						<label>Amplitude:
 							<span class="inline-label">
-							<input type="number" step="any" name="amplitude" ng-model="excite.A" min="0" required>
+							<input type="number" step="any" name="amplitude" ng-model="excite.mydata.myexcitefunc.A" min="0" required>
 							<span class="form-label">(m / s<sup>2</sup>)</span>
 						</label>
 						<label>Time Step:
 							<span class="inline-label">
-							<input type="number" step="0.01" name="timestep" ng-model="excite.dt" min="0.01" required>
+							<input type="number" step="0.01" name="timestep" ng-model="excite.mydata.myexcitefunc.dt" min="0.01" required>
 							<span class="form-label">seconds (s)</span>
 						</label>
 						<label>Total Time:
 							<span class="inline-label">
-							<input type="number" step="any" name="totalTime" ng-model="excite.totalTime" min="0.01" required>
+							<input type="number" step="any" name="totalTime" ng-model="excite.mydata.myexcitefunc.totalTime" min="0.01" required>
 							<span class="form-label">seconds (s)</span>
 						</label>
+						<label>Horizontal Shift:
+							<span class="inline-label">
+							<input type="number" step="any" name="hShift" ng-model="excite.mydata.myexcitefunc.hShift">
+							<span class="form-label">seconds (s)</span>
+						</label>						
+						<label>Vertical Shift:
+							<span class="inline-label">
+							<input type="number" step="any" name="vShift" ng-model="excite.mydata.myexcitefunc.totalTime">
+							<span class="form-label">(m / s<sup>2</sup>)</span>
+						</label>	
 				</div>
 				
 				<div class="small-12 medium-6 grid-content" ng-show="excite.selectedfrcfun===excite.frcfuns[1].name">
@@ -60,8 +70,8 @@ url: /excitation/
 				</div>
 				
 				<!-- Preview of the forcing function-->
-				<div class="small-12 medium-6 grid-content" ng-controller="LineCtrl">			
-					<linechart data="data" options="options" height="400"></linechart>
+				<div class="small-12 medium-6 grid-content" ng-controller="LineCtrl as line">			
+					<linechart data="line.mydata.myexcitefunc.series" options="line.plotoptions" height="400"></linechart>
 				</div>
 				<div class="small-12 medium-6 grid-content">
 				 	<input type="submit" id="submit" class="dark button" value="Create Function" />	
