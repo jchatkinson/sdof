@@ -7,75 +7,78 @@ url: /excitation/
   <h1>Excitation!</h1>
   <p class="lead">This is where we define the forcing function</p>
    <hr>
-   <form ng-submit="excite.submit()" ng-controller="ExcitationCtrl as excite">
+   <form ng-submit="ex.submit()" ng-controller="ExcitationCtrl as ex">
 		<div>
 			<label>Type of Forcing Function
-				<select ng-model="excite.selectedfrcfun" ng-options="frcfun.name as frcfun.fullname for frcfun in excite.frcfuns"></select>
+				<select ng-model="ex.mydata.eFun.type" ng-options="frcfun.name as frcfun.fullname for frcfun in ex.frcfuns"></select>
 			</label>
 			<br>
-			<p>Showing options for the "{{ excite.selectedfrcfun }}" forcing function</p>				
+			<p>Showing options for the "{{ ex.mydata.eFun.type }}" forcing function</p>				
 			<!-- Based on selection, present different forms -->
 		</div>   
 		<div class="grid-block">
-				<div class="small-12 medium-6 grid-content" ng-show="excite.selectedfrcfun===excite.frcfuns[0].name">
+				<div class="small-12 medium-6 grid-content" ng-show="ex.mydata.eFun.type===ex.frcfuns[0].name">
 					<!-- Harmonic functions - Sine, Sawtooth, Square wave -->
-						<label>Type of Forcing Function
-							<select ng-model="excite.mydata.myexcitefunc.selectedharmfun" ng-options="harmfun.name as harmfun.fullname for harmfun in excite.harmfuns"></select>
+						<label>Type of Harmonic Function
+							<select ng-model="ex.mydata.eFun.subtype" ng-change="ex.mydata.update()" ng-options="harmfun.name as harmfun.fullname for harmfun in ex.harmfuns" ></select>
 						</label>
 						<label>Period:
 							<span class="inline-label">
-							<input type="number" step="any" name="period" ng-model="excite.mydata.myexcitefunc.T" min="0" required>
+							<input type="number" ng-model="ex.mydata.eT" ng-change="ex.mydata.update()" step="any" name="period"  min="0" required>
 							<span class="form-label">seconds (s)</span>
 						</label>				
 						<label>Amplitude:
 							<span class="inline-label">
-							<input type="number" step="any" name="amplitude" ng-model="excite.mydata.myexcitefunc.A" min="0" required>
+							<input type="number" step="any" name="amplitude" ng-model="ex.mydata.eA" ng-change="ex.mydata.update()" min="0" required>
 							<span class="form-label">(m / s<sup>2</sup>)</span>
 						</label>
 						<label>Time Step:
 							<span class="inline-label">
-							<input type="number" step="0.01" name="timestep" ng-model="excite.mydata.myexcitefunc.dt" min="0.01" required>
+							<input type="number" step="0.01" name="timestep" ng-model="ex.mydata.edt" ng-change="ex.mydata.update()" min="0.01" required>
 							<span class="form-label">seconds (s)</span>
 						</label>
 						<label>Total Time:
 							<span class="inline-label">
-							<input type="number" step="any" name="totalTime" ng-model="excite.mydata.myexcitefunc.totalTime" min="0.01" required>
+							<input type="number" step="any" name="totalTime" ng-model="ex.mydata.etotalTime" ng-change="ex.mydata.update()" min="0.01" required>
 							<span class="form-label">seconds (s)</span>
 						</label>
 						<label>Horizontal Shift:
 							<span class="inline-label">
-							<input type="number" step="any" name="hShift" ng-model="excite.mydata.myexcitefunc.hShift">
+							<input type="number" step="any" name="hShift" ng-model="ex.mydata.eHShift" ng-change="ex.mydata.update()">
 							<span class="form-label">seconds (s)</span>
 						</label>						
 						<label>Vertical Shift:
 							<span class="inline-label">
-							<input type="number" step="any" name="vShift" ng-model="excite.mydata.myexcitefunc.totalTime">
+							<input type="number" step="any" name="vShift" ng-model="ex.mydata.eVShift" ng-change="ex.mydata.update()">
 							<span class="form-label">(m / s<sup>2</sup>)</span>
 						</label>	
 				</div>
 				
-				<div class="small-12 medium-6 grid-content" ng-show="excite.selectedfrcfun===excite.frcfuns[1].name">
+				<!-- Impulse Form -->
+				<div class="small-12 medium-6 grid-content" ng-show="ex.mydata.eFun.type===ex.frcfuns[1].name">
 					Implulse
 					<p>TODO</p>
-				</div>			
-				<div class="small-12 medium-6 grid-content" ng-show="excite.selectedfrcfun===excite.frcfuns[2].name">
+				</div>	
+				
+				<!-- File Upload Form-->		
+				<div class="small-12 medium-6 grid-content" ng-show="ex.mydata.eFun.type===ex.frcfuns[2].name">
 					<p>TODO</p>
 					<label>File Upload:						
 						<input type="file">
 					</label>
 					<p>Note: The file must formatted such that each row contains <code>[time,acceleration]</code></p>
 					<label>Scale Factor:
-						<input type="number" step="any" name="scalefactor" ng-model="excite.SF" required>
+						<input type="number" step="any" name="scalefactor" ng-model="ex.SF" required>
 					</label>
 				</div>
 				
 				<!-- Preview of the forcing function-->
 				<div class="small-12 medium-6 grid-content" ng-controller="LineCtrl as line">			
-					<linechart data="line.mydata.myexcitefunc.series" options="line.plotoptions" height="400"></linechart>
+					<linechart data="line.mydata.eSeries" options="line.plotoptions" height="400"></linechart>
 				</div>
-				<div class="small-12 medium-6 grid-content">
+				<!-- <div class="small-12 medium-6 grid-content">
 				 	<input type="submit" id="submit" class="dark button" value="Create Function" />	
-				</div>		
+				</div>		-->
 			</div>
 	</form> 
 </div>

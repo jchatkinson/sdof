@@ -21,6 +21,7 @@ var isProduction = !!(argv.production);
 var paths = {
   assets: [
     './client/**/*.*',
+    './client/assets/img/*.*',
     '!./client/templates/**/*.*',
     '!./client/assets/{scss,js}/**/*.*'
   ],
@@ -155,7 +156,8 @@ gulp.task('server', ['build'], function() {
   gulp.src('./build')
     .pipe($.webserver({
       port: 8080,
-      host: 'localhost',
+      //host: 'localhost',
+      host: '0.0.0.0',
       fallback: 'index.html',
       livereload: true,
       open: true
