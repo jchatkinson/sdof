@@ -20,36 +20,36 @@ url: /excitation/
 				<div class="small-12 medium-6 grid-content" ng-show="ex.mydata.eFun.type===ex.frcfuns[0].name">
 					<!-- Harmonic functions - Sine, Sawtooth, Square wave -->
 						<label>Type of Harmonic Function
-							<select ng-model="ex.mydata.eFun.subtype" ng-change="ex.mydata.update()" ng-options="harmfun.name as harmfun.fullname for harmfun in ex.harmfuns" ></select>
+							<select ng-model="ex.mydata.eFun.subtype" ng-change="ex.mydata.onChange()" ng-options="harmfun.name as harmfun.fullname for harmfun in ex.harmfuns" ></select>
 						</label>
 						<label>Period:
 							<span class="inline-label">
-							<input type="number" ng-model="ex.mydata.eT" ng-change="ex.mydata.update()" step="any" name="period"  min="0" required>
+							<input type="number" ng-model="ex.mydata.eT" ng-change="ex.mydata.onChange()" step="any" name="period"  min="0" required>
 							<span class="form-label">seconds (s)</span>
 						</label>				
 						<label>Amplitude:
 							<span class="inline-label">
-							<input type="number" step="any" name="amplitude" ng-model="ex.mydata.eA" ng-change="ex.mydata.update()" min="0" required>
+							<input type="number" step="any" name="amplitude" ng-model="ex.mydata.eA" ng-change="ex.mydata.onChange()" min="0" required>
 							<span class="form-label">(m / s<sup>2</sup>)</span>
 						</label>
 						<label>Time Step:
 							<span class="inline-label">
-							<input type="number" step="0.01" name="timestep" ng-model="ex.mydata.edt" ng-change="ex.mydata.update()" min="0.01" required>
+							<input type="number" step="0.01" name="timestep" ng-model="ex.mydata.edt" ng-change="ex.mydata.onChange()" min="0.01" required>
 							<span class="form-label">seconds (s)</span>
 						</label>
 						<label>Total Time:
 							<span class="inline-label">
-							<input type="number" step="any" name="totalTime" ng-model="ex.mydata.etotalTime" ng-change="ex.mydata.update()" min="0.01" required>
+							<input type="number" step="any" name="totalTime" ng-model="ex.mydata.etotalTime" ng-change="ex.mydata.onChange()" min="0.01" required>
 							<span class="form-label">seconds (s)</span>
 						</label>
 						<label>Horizontal Shift:
 							<span class="inline-label">
-							<input type="number" step="any" name="hShift" ng-model="ex.mydata.eHShift" ng-change="ex.mydata.update()">
+							<input type="number" step="any" name="hShift" ng-model="ex.mydata.eHShift" ng-change="ex.mydata.onChange()">
 							<span class="form-label">seconds (s)</span>
 						</label>						
 						<label>Vertical Shift:
 							<span class="inline-label">
-							<input type="number" step="any" name="vShift" ng-model="ex.mydata.eVShift" ng-change="ex.mydata.update()">
+							<input type="number" step="any" name="vShift" ng-model="ex.mydata.eVShift" ng-change="ex.mydata.onChange()">
 							<span class="form-label">(m / s<sup>2</sup>)</span>
 						</label>	
 				</div>

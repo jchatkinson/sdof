@@ -9,22 +9,23 @@ url: /response/
 	  	This is the response of the SDOF system with T={{ ::response.mydata.sT | number}} 
 	  	and &zeta;={{ ::response.mydata.sDamp | number }}%:
 	  </p>
-	<div class="vertical grid-block">
+	  <a class="dark button" ng-click="response.mydata.calcResponse">Let's do this!</a>
+	<div class="vertical grid-block" ng-controller="LineCtrl as line">
 		<div class="grid-content">
 			<h4>Displacement Response</h4>
-			<p>[Graph Here]</p>
+			<linechart data="line.mydata.response.u" options="line.plotoptions" height="300"></linechart>
 		</div>
 		<div class="grid-content">
 			<h4>Velocity Response</h4>
-			<p>[Graph Here]</p>	
+			<linechart data="line.mydata.response.v" options="line.plotoptions" height="300"></linechart>
 		</div>
 		<div class="grid-content">
 			<h4>Acceleration Response</h4>
-			<p>[Graph Here]</p>	
+			<linechart data="line.mydata.response.a" options="line.plotoptions" height="300"></linechart>
 		</div>
-		<div class="grid-content">
+		<div class="grid-content" >
 			<h4>Forcing Function</h4>
-			<p>[Graph Here]</p>
+			<linechart data="line.mydata.eSeries" options="line.plotoptions" height="300"></linechart>
 		</div>
 	</div>
 </div>

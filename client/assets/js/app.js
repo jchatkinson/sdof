@@ -22,9 +22,13 @@
 	    mydata.eSF = 1.0;
 	    mydata.eVShift = 0;
 	    mydata.eHShift = 0;
+	    mydata.response = [];
 	    mydata.eSeries = createHarmonicTimeSeries( mydata.eFun.subtype, mydata.eT, mydata.eA, mydata.eHShift, mydata.eVShift, mydata.edt, mydata.etotalTime);
-	  	mydata.update = function () {
+	  	mydata.onChange = function () {
 	  		mydata.eSeries = createHarmonicTimeSeries( mydata.eFun.subtype, mydata.eT, mydata.eA, mydata.eHShift, mydata.eVShift, mydata.edt, mydata.etotalTime);
+	  	}
+	  	mydata.calcResponse = function() {
+	  		mydata.response = analyzeSystem(mydata.sT,mydata.sDamp,mydata.eSeries,mydata.edt);
 	  	}
   	};
 	angular
@@ -74,6 +78,54 @@
 		return myseries;
 	}
 	
+	//define a function to analyze the system
+	function analyzeSystem(T,zeta,ag,dt) {
+		//check if zeta is in decimal or percent notation
+		if (zeta > 1.0) {
+			zeta = zeta/100.0
+		};
+		var t = 0;
+		var npts = ag.length;		
+		var w = 2*Math.PI/T;
+		var m=1000; 
+		var k = w*w*m;
+		var wd = w*Math.sqrt(1-w*w);
+		var e = Math.exp(-zeta*w*dt);
+		var s = Math.sin(wd*dt);
+		var c = Math.cos(wd*dt);
+		//set inital conditions
+		var u=[{x:0,y:0}];
+		var v=[{x:0,y:0}];
+		var pr = [{x:0,y: k*u[0].y}];
+		var y0 = -ag[0].y - 2.0*zeta*w*v[0].y - pr[0].y/m;
+		var a=[{x:0,y:y0}];
+		//recurrence formula coefficiencts
+		var A  = e*(zeta/Math.sqrt(1.0-zeta*zeta)*s + c);
+    	var B  = e*(1.0/wd*s);
+    	var C  = -1.0/(w*w)*(2.0*zeta/(w*dt) + e*(((1.0-2.0*zeta*zeta)/(wd*dt) - zeta/Math.sqrt(1.0-zeta*zeta))*s - (1.0+2.0*zeta/(w*dt))*c));
+    	var D  = -1.0/(w*w)*(1.0-2.0*zeta/(w*dt) + e*((2.0*zeta*zeta-1.0)/(wd*dt)*s + 2.0*zeta/(w*dt)*c));
+    	var Ap = -e*(w/Math.sqrt(1.0-zeta*zeta)*s);
+    	var Bp = e*(c-zeta/Math.sqrt(1.0-zeta*zeta)*s);
+    	var Cp = -1.0/(w*w)*(-1.0/dt + e*((w/Math.sqrt(1.0-zeta*zeta) + zeta/(dt*Math.sqrt(1.0-zeta*zeta)))*s + 1.0/dt*c));
+    	var Dp = -1.0/(w*w*dt)*(1.0 - e*(zeta/Math.sqrt(1.0-zeta*zeta)*s+c));
+    	//loop through each steps
+    	for (i=0; i<npts-1; i++) {
+    		agi = (i<npts) ? ag[i].y : 0.0;
+        	agip1 = (i<npts-1) ? ag[i+1].y : 0.0;
+        	t = i*dt;
+        	u.push({x:t, y: A * u[i].y + B * v[i].y + C * agi + D * agip1});
+        	v.push({x:t,y:Ap * u[i].y + Bp * v[i].y + Cp * agi + Dp * agip1});
+			pr.push({x:t,y:k*u[i+1].y}); 
+			a.push({x:t,y:-agip1 - 2.0*zeta*w*v[i+1].y - pr[i+1].y/m});
+    	};
+		return {
+			u: u,		
+			v: v,
+			a: a
+		};
+	}
+	
+	
 	
 	//define a controller for the Excitation template that uses the mydata service
 	function ExcitationCtrl(mydata) {
@@ -98,14 +150,16 @@
 		.module('application')	
 		.controller('SystemPropCtrl', SystemPropCtrl);  
   	
-  	//define a controller for the excitation plot
+  	//define a controller for plots
  	function LineCtrl(mydata) {
  		var vm = this;
  		vm.mydata = mydata;
- 		
 	    vm.plotoptions = {
 	    	//axes: {x: {key: 'x', min: 0, max: vm.mydata.etotalTime}},
-			series: [{y: "y",label: "My forcing function",color: "#1f77b4",type: "area"}]
+			series: [{y: "y",label: "My forcing function",color: "#1f77b4",type: "line",thickness:"3px"}],
+	    	drawLegend: false,
+	    	drawDots: false,
+	    	hideOverflor: true
 	    };
 	};
 	angular
