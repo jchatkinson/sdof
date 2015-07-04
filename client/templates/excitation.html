@@ -5,15 +5,14 @@ url: /excitation/
 
 <div class="grid-container">
   <h1>Excitation!</h1>
-  <p class="lead">This is where we define the forcing function</p>
+  <p class="lead">Define a forcing function</p>
    <hr>
-   <form ng-submit="ex.submit()" ng-controller="ExcitationCtrl as ex">
+   <form ng-controller="ExcitationCtrl as ex">
 		<div>
 			<label>Type of Forcing Function
 				<select ng-model="ex.mydata.eFun.type" ng-options="frcfun.name as frcfun.fullname for frcfun in ex.frcfuns"></select>
 			</label>
-			<br>
-			<p>Showing options for the "{{ ex.mydata.eFun.type }}" forcing function</p>				
+			<br>		
 			<!-- Based on selection, present different forms -->
 		</div>   
 		<div class="grid-block">
@@ -24,32 +23,32 @@ url: /excitation/
 						</label>
 						<label>Period:
 							<span class="inline-label">
-							<input type="number" ng-model="ex.mydata.eT" ng-change="ex.mydata.onChange()" step="any" name="period"  min="0" required>
+							<input type="number" ng-model="ex.mydata.eT" ng-change="ex.mydata.onChange()" step="0.01" name="period"  min="0" required>
 							<span class="form-label">seconds (s)</span>
 						</label>				
 						<label>Amplitude:
 							<span class="inline-label">
-							<input type="number" step="any" name="amplitude" ng-model="ex.mydata.eA" ng-change="ex.mydata.onChange()" min="0" required>
+							<input type="number" step="0.01" name="amplitude" ng-model="ex.mydata.eA" ng-change="ex.mydata.onChange()" min="0" required>
 							<span class="form-label">(m / s<sup>2</sup>)</span>
 						</label>
 						<label>Time Step:
 							<span class="inline-label">
-							<input type="number" step="0.01" name="timestep" ng-model="ex.mydata.edt" ng-change="ex.mydata.onChange()" min="0.01" required>
+							<input type="number" step="0.001" name="timestep" ng-model="ex.mydata.edt" ng-change="ex.mydata.onChange()" min="0.0001" required>
 							<span class="form-label">seconds (s)</span>
 						</label>
 						<label>Total Time:
 							<span class="inline-label">
-							<input type="number" step="any" name="totalTime" ng-model="ex.mydata.etotalTime" ng-change="ex.mydata.onChange()" min="0.01" required>
+							<input type="number" step="0.01" name="totalTime" ng-model="ex.mydata.etotalTime" ng-change="ex.mydata.onChange()" min="0.01" required>
 							<span class="form-label">seconds (s)</span>
 						</label>
 						<label>Horizontal Shift:
 							<span class="inline-label">
-							<input type="number" step="any" name="hShift" ng-model="ex.mydata.eHShift" ng-change="ex.mydata.onChange()">
+							<input type="number" step="0.01" name="hShift" ng-model="ex.mydata.eHShift" ng-change="ex.mydata.onChange()">
 							<span class="form-label">seconds (s)</span>
 						</label>						
 						<label>Vertical Shift:
 							<span class="inline-label">
-							<input type="number" step="any" name="vShift" ng-model="ex.mydata.eVShift" ng-change="ex.mydata.onChange()">
+							<input type="number" step="0.01" name="vShift" ng-model="ex.mydata.eVShift" ng-change="ex.mydata.onChange()">
 							<span class="form-label">(m / s<sup>2</sup>)</span>
 						</label>	
 				</div>
@@ -62,13 +61,22 @@ url: /excitation/
 				
 				<!-- File Upload Form-->		
 				<div class="small-12 medium-6 grid-content" ng-show="ex.mydata.eFun.type===ex.frcfuns[2].name">
-					<p>TODO</p>
-					<label>File Upload:						
-						<input type="file">
+					<label>File Format
+						<select ng-model="ex.selectedfileformat" ng-options="fileformat as fileformat.fullname for fileformat in ex.fileformats" ></select>
 					</label>
-					<p>Note: The file must formatted such that each row contains <code>[time,acceleration]</code></p>
+					<label>File Upload:						
+						<input type="file" name="userfile" accept=".txt,.dat,.AT2">
+					</label>
+					 <p ng-bind-html="ex.selectedfileformat.note | unsafe"></p>
+					<div ng-show="ex.selectedfileformat===ex.fileformats[1]">					
+						<label>Time interval:
+							<input type="number" step="any" name="dt" ng-model="ex.mydata.edt" required>
+						</label>
+					</div> 
+					 
+					 
 					<label>Scale Factor:
-						<input type="number" step="any" name="scalefactor" ng-model="ex.SF" required>
+						<input type="number" step="any" name="scalefactor" ng-model="ex.mydata.eSF" required>
 					</label>
 				</div>
 				

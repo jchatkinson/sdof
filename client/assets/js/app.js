@@ -138,6 +138,10 @@
     	vm.frcfuns = [{name:'harmonic',fullname:'Harmonic Function'},{name:'impulse',fullname:'Impulse Load'},{name:'file',fullname:'Time History from File'}];	
 	 	vm.harmfuns = [{name:'sine', fullname:'Sine Wave'},{name:'saw', fullname:'Sawtooth Wave'},{name:'square', fullname:'Square Wave'}];
 	 	vm.impfuns = [{name:'rampup', fullname:'Ramp Up'},{name:'rampdn', fullname:'Ramp Down'}];
+	 	vm.fileformats = [{name:'peer',fullname:'PEER NGA File',note:'Note: The file must formatted as an unaltered PEER NGA Record'},
+	 						{name:'acc',fullname:'Acceleration',note:'Note: The file must formatted such that each row contains <code>[acceleration]</code> at a specified time interval'},
+	 						{name:'timeacc',fullname:'Time and Acceleration',note:'Note: The file must formatted such that each row contains <code>[time,acceleration]</code>'}];
+	 	vm.selectedfileformat = vm.fileformats[2];
 	    };
 	angular
 		.module('application')
@@ -179,6 +183,16 @@
 		.module('application')		
   		.controller('ResponseCtrl' , ResponseCtrl);
   		
+  	
+	//filter for displaying 'unsafe' html with ng-bind-html
+	 function UnSafeHTML($sce) {
+	 	return function(val){
+	 		return $sce.trustAsHtml(val);
+	 	};
+	 };
+	 angular
+	 	.module('application')
+	 	.filter('unsafe',UnSafeHTML); 	
   		
 	//configure and build application
 	angular
