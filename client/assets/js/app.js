@@ -15,20 +15,20 @@
   		mydata.sT = 0.5;
   		mydata.sDamp = 5;
   		mydata.eFun = {type:'harmonic',subtype:'sine'}; // default to sine function
-	    mydata.eT = 5;
+	    mydata.eT = 1.0;
 	    mydata.eA = 1.0; 
-	    mydata.edt = 0.1;
-	    mydata.etotalTime = 10.0;
+	    mydata.edt = 0.01;
+	    mydata.etotalTime = 5.0;
 	    mydata.eSF = 1.0;
 	    mydata.eVShift = 0;
 	    mydata.eHShift = 0;
-	    mydata.response = [];
 	    mydata.eSeries = createHarmonicTimeSeries( mydata.eFun.subtype, mydata.eT, mydata.eA, mydata.eHShift, mydata.eVShift, mydata.edt, mydata.etotalTime);
+  		mydata.response = analyzeSystem(mydata.sT,mydata.sDamp,mydata.eSeries,mydata.edt,mydata.etotalTime);
 	  	mydata.onChange = function () {
 	  		mydata.eSeries = createHarmonicTimeSeries( mydata.eFun.subtype, mydata.eT, mydata.eA, mydata.eHShift, mydata.eVShift, mydata.edt, mydata.etotalTime);
 	  	}
 	  	mydata.calcResponse = function() {
-	  		mydata.response = analyzeSystem(mydata.sT,mydata.sDamp,mydata.eSeries,mydata.edt);
+	  		mydata.response = analyzeSystem(mydata.sT,mydata.sDamp,mydata.eSeries,mydata.edt,mydata.etotalTime);
 	  	}
   	};
 	angular
@@ -79,17 +79,18 @@
 	}
 	
 	//define a function to analyze the system
-	function analyzeSystem(T,zeta,ag,dt) {
+	function analyzeSystem(T,zeta,ag,dt,ttotal) {
 		//check if zeta is in decimal or percent notation
 		if (zeta > 1.0) {
 			zeta = zeta/100.0
 		};
 		var t = 0;
-		var npts = ag.length;		
+		var npts_ag = ag.length;
+		var npts_total = Math.ceil(ttotal/dt);
 		var w = 2*Math.PI/T;
 		var m=1000; 
 		var k = w*w*m;
-		var wd = w*Math.sqrt(1-w*w);
+		var wd = w*Math.sqrt(1.0-zeta*zeta);
 		var e = Math.exp(-zeta*w*dt);
 		var s = Math.sin(wd*dt);
 		var c = Math.cos(wd*dt);
@@ -109,9 +110,12 @@
     	var Cp = -1.0/(w*w)*(-1.0/dt + e*((w/Math.sqrt(1.0-zeta*zeta) + zeta/(dt*Math.sqrt(1.0-zeta*zeta)))*s + 1.0/dt*c));
     	var Dp = -1.0/(w*w*dt)*(1.0 - e*(zeta/Math.sqrt(1.0-zeta*zeta)*s+c));
     	//loop through each steps
-    	for (i=0; i<npts-1; i++) {
-    		agi = (i<npts) ? ag[i].y : 0.0;
-        	agip1 = (i<npts-1) ? ag[i+1].y : 0.0;
+    	var i;
+    	var agi;
+		var agip1;
+    	for (i=0; i<npts_total-1; i++) {
+    		agi = (i<npts_ag) ? ag[i].y : 0.0;
+        	agip1 = (i<npts_ag-1) ? ag[i+1].y : 0.0;
         	t = i*dt;
         	u.push({x:t, y: A * u[i].y + B * v[i].y + C * agi + D * agip1});
         	v.push({x:t,y:Ap * u[i].y + Bp * v[i].y + Cp * agi + Dp * agip1});
@@ -156,7 +160,7 @@
  		vm.mydata = mydata;
 	    vm.plotoptions = {
 	    	//axes: {x: {key: 'x', min: 0, max: vm.mydata.etotalTime}},
-			series: [{y: "y",label: "My forcing function",color: "#1f77b4",type: "line",thickness:"3px"}],
+			series: [{y: "y",label: "My forcing function",color: "#1f77b4",type: "line",thickness:"1px"}],
 	    	drawLegend: false,
 	    	drawDots: false,
 	    	hideOverflor: true

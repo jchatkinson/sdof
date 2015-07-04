@@ -4,12 +4,12 @@ url: /response/
 ---
 
 <div class="grid-container" ng-controller="ResponseCtrl as response">
-  <h1>System Response</h1>
-	  <p class="lead">
+	<h1>System Response</h1>
+	<p class="lead">
 	  	This is the response of the SDOF system with T={{ ::response.mydata.sT | number}} 
 	  	and &zeta;={{ ::response.mydata.sDamp | number }}%:
-	  </p>
-	  <a class="dark button" ng-click="response.mydata.calcResponse">Let's do this!</a>
+	</p>
+  <button type="button" class="dark button" ng-click="response.mydata.calcResponse()">Let's do this!</button>
 	<div class="vertical grid-block" ng-controller="LineCtrl as line">
 		<div class="grid-content">
 			<h4>Displacement Response</h4>
