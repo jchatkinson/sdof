@@ -11,6 +11,7 @@ var gulp     = require('gulp');
 var rimraf   = require('rimraf');
 var router   = require('front-router');
 var sequence = require('run-sequence');
+var ghPages  = require('gulp-gh-pages');
 
 // Check for --production flag
 var isProduction = !!(argv.production);
@@ -169,6 +170,13 @@ gulp.task('server', ['build'], function() {
 gulp.task('build', function(cb) {
   sequence('clean', ['copy', 'copy:foundation', 'sass', 'uglify'], 'copy:templates', cb);
 });
+
+// Deploy task: push build to gh-pages
+gulp.task('deploy',function () {
+	return gulp.src('./build/**/*')
+		.pipe(ghPages());
+});
+
 
 // Default task: builds your app, starts a server, and recompiles assets when they change
 gulp.task('default', ['server'], function () {
