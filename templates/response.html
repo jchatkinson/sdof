@@ -1,0 +1,27 @@
+
+<div class="grid-container" ng-controller="ResponseCtrl as response">
+	<h1>System Response</h1>
+	<p class="lead">
+	  	This is the response of the SDOF system with T={{ ::response.mydata.sT | number}} 
+	  	and &zeta;={{ ::response.mydata.sDamp | number }}%:
+	</p>
+  <button type="button" class="dark button" ng-click="response.calcResponse()">Let's do this!</button>
+	<div class="vertical grid-block" ng-controller="LineCtrl as line">
+		<div class="grid-content">
+			<h4>Displacement Response</h4>
+			<linechart data="line.mydata.response.u" options="line.plotoptions" height="300"></linechart>
+		</div>
+		<div class="grid-content">
+			<h4>Velocity Response</h4>
+			<linechart data="line.mydata.response.v" options="line.plotoptions" height="300"></linechart>
+		</div>
+		<div class="grid-content">
+			<h4>Acceleration Response</h4>
+			<linechart data="line.mydata.response.a" options="line.plotoptions" height="300"></linechart>
+		</div>
+		<div class="grid-content" >
+			<h4>Forcing Function</h4>
+			<linechart data="line.mydata.eSeries" options="line.plotoptions" height="300"></linechart>
+		</div>
+	</div>
+</div>
