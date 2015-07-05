@@ -24,12 +24,20 @@
 	    mydata.eHShift = 0;
 	    mydata.eSeries = createHarmonicTimeSeries( mydata.eFun.subtype, mydata.eT, mydata.eA, mydata.eHShift, mydata.eVShift, mydata.edt, mydata.etotalTime);
   		mydata.response = analyzeSystem(mydata.sT,mydata.sDamp,mydata.eSeries,mydata.edt,mydata.etotalTime);
-	  	mydata.onChange = function () {
-	  		mydata.eSeries = createHarmonicTimeSeries( mydata.eFun.subtype, mydata.eT, mydata.eA, mydata.eHShift, mydata.eVShift, mydata.edt, mydata.etotalTime);
-	  	}
-	  	mydata.calcResponse = function() {
-	  		mydata.response = analyzeSystem(mydata.sT,mydata.sDamp,mydata.eSeries,mydata.edt,mydata.etotalTime);
-	  	}
+	  	//mydata.onChange = function () {
+	  	//	mydata.eSeries = createHarmonicTimeSeries( mydata.eFun.subtype, mydata.eT, mydata.eA, mydata.eHShift, mydata.eVShift, mydata.edt, mydata.etotalTime);
+	  	//}
+		//mydata.fileupload = function(){
+		//	var userfile = document.getElementById("userfile").files[0];
+	    //    var reader = new FileReader();
+	    //  	reader.onloadend = function(){
+	    //    	mydata.eSeries = reader.result;
+	    //  	}
+	    //  	reader.readAsText(userfile);
+	    //}	  		  	
+	  	//mydata.calcResponse = function() {
+	  	//	mydata.response = analyzeSystem(mydata.sT,mydata.sDamp,mydata.eSeries,mydata.edt,mydata.etotalTime);
+	  	//}
   	};
 	angular
 		.module('application')
@@ -129,20 +137,44 @@
 		};
 	}
 	
-	
-	
 	//define a controller for the Excitation template that uses the mydata service
 	function ExcitationCtrl(mydata) {
     	var vm = this;
     	vm.mydata = mydata;
-    	vm.frcfuns = [{name:'harmonic',fullname:'Harmonic Function'},{name:'impulse',fullname:'Impulse Load'},{name:'file',fullname:'Time History from File'}];	
-	 	vm.harmfuns = [{name:'sine', fullname:'Sine Wave'},{name:'saw', fullname:'Sawtooth Wave'},{name:'square', fullname:'Square Wave'}];
-	 	vm.impfuns = [{name:'rampup', fullname:'Ramp Up'},{name:'rampdn', fullname:'Ramp Down'}];
-	 	vm.fileformats = [{name:'peer',fullname:'PEER NGA File',note:'Note: The file must formatted as an unaltered PEER NGA Record'},
-	 						{name:'acc',fullname:'Acceleration',note:'Note: The file must formatted such that each row contains <code>[acceleration]</code> at a specified time interval'},
-	 						{name:'timeacc',fullname:'Time and Acceleration',note:'Note: The file must formatted such that each row contains <code>[time,acceleration]</code>'}];
-	 	vm.selectedfileformat = vm.fileformats[2];
-	    };
+    	vm.funtypes = [{name:'harmonic',fullname:'Harmonic Function'},{name:'impulse',fullname:'Impulse Load'},{name:'file',fullname:'Time History File'}];
+    	vm.funsubtypes = function () {
+    		if ( vm.isTypeSelected(0) ) { 
+    			return [{name:'sine', fullname:'Sine Wave'},{name:'saw', fullname:'Sawtooth Wave'},{name:'square', fullname:'Square Wave'}];
+			};
+    		if ( vm.isTypeSelected(1) ) {  
+    			return [{name:'rampup', fullname:'Ramp Up'},{name:'rampdn', fullname:'Ramp Down'}];
+    		};
+    		if ( vm.isTypeSelected(2) ) {  
+    			return [{name:'peer',fullname:'PEER NGA File',note:'Note: The file must formatted as an unaltered <a href="http://ngawest2.berkeley.edu/" target="_blank">PEER NGA Record</a>'},
+ 						{name:'acc',fullname:'Acceleration',note:'Note: The file must formatted such that each row contains <code>[acceleration]</code> at a specified time interval'},
+ 						{name:'timeacc',fullname:'Time and Acceleration',note:'Note: The file must formatted such that each row contains <code>[time,acceleration]</code>'}];
+    		};    		
+    	};
+	 	vm.isSubtypeSelected = function (checkind) {
+	 		vm.funsubtypes();
+	 		return vm.mydata.eFun.subtype === vm.funsubtypes[checkind].name;
+	 	};
+	 	vm.isTypeSelected = function(checkind){
+	 		return vm.mydata.eFun.type === vm.funtypes[checkind].name;
+	 	};
+	 	vm.fileupload = function(){
+			var userfile = document.getElementById("userfile").files[0];
+	        var reader = new FileReader();
+	      	reader.onloadend = function(){
+	       		vm.mydata.eSeries = reader.result;
+	       		
+	      	};
+	      	reader.readAsText(userfile);
+	    };	  		     	
+    	//mydata.onChange = function () {
+	  	//	mydata.eSeries = createHarmonicTimeSeries( mydata.eFun.subtype, mydata.eT, mydata.eA, mydata.eHShift, mydata.eVShift, mydata.edt, mydata.etotalTime);
+	  	//}
+	};
 	angular
 		.module('application')
 		.controller('ExcitationCtrl',ExcitationCtrl);
@@ -158,6 +190,19 @@
 		.module('application')	
 		.controller('SystemPropCtrl', SystemPropCtrl);  
   	
+  	//define a controller for the Response template that uses the MyData service
+  	function ResponseCtrl(mydata) {
+		var vm = this;
+		vm.mydata = mydata;
+		vm.calcResponse = function() {
+	  		vm.mydata.response = analyzeSystem(vm.mydata.sT,vm.mydata.sDamp,vm.mydata.eSeries,vm.mydata.edt,vm.mydata.etotalTime);
+	  	};
+		
+	};
+	angular
+		.module('application')		
+  		.controller('ResponseCtrl' , ResponseCtrl);
+  		  	
   	//define a controller for plots
  	function LineCtrl(mydata) {
  		var vm = this;
@@ -173,15 +218,6 @@
 	angular
 		.module('application')		
   		.controller('LineCtrl', LineCtrl);
-  	
-  	//define a controller for the Response template that uses the MyData service
-  	function ResponseCtrl(mydata) {
-		var response = this;
-		response.mydata = mydata;
-	};
-	angular
-		.module('application')		
-  		.controller('ResponseCtrl' , ResponseCtrl);
   		
   	
 	//filter for displaying 'unsafe' html with ng-bind-html

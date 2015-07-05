@@ -9,7 +9,7 @@ url: /response/
 	  	This is the response of the SDOF system with T={{ ::response.mydata.sT | number}} 
 	  	and &zeta;={{ ::response.mydata.sDamp | number }}%:
 	</p>
-  <button type="button" class="dark button" ng-click="response.mydata.calcResponse()">Let's do this!</button>
+  <button type="button" class="dark button" ng-click="response.calcResponse()">Let's do this!</button>
 	<div class="vertical grid-block" ng-controller="LineCtrl as line">
 		<div class="grid-content">
 			<h4>Displacement Response</h4>
