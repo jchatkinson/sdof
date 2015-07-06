@@ -10,38 +10,37 @@ url: /excitation/
    <form ng-controller="ExcitationCtrl as ex">
 		<div>
 			<label>Type of Forcing Function
-				<select ng-model="ex.mydata.eFun.type" ng-options="funtype.name as funtype.fullname for funtype in ex.funtypes" ng-change="ex.funsubtypes()"></select>
+				<select ng-model="ex.mydata.eFun" ng-options="funtype as funtype.fullname group by funtype.type for funtype in ex.funtypes"></select>
 			</label>
+			<p>mydata.eFun = {{ ex.mydata.eFun }}</p>
+
 			<br>
 		</div>   
 		<div class="grid-block">
 			<div class="small-12 medium-4 grid-content">
-				<label>Subtype:
-					<select ng-model="ex.mydata.eFun.subtype" ng-options="funsubtype.name as funsubtype.fullname for funsubtype in ex.funsubtypes()" ></select>
-				</label>
-				<div ng-show="ex.isTypeSelected(2)">
+				<div ng-show="ex.isFunSelected([5,6,7])">
 					<label>File Upload:						
 						<input type="file" id="userfile" name="userfile" accept=".txt,.dat,.AT2">
 					</label>		
-					<p ng-bind-html="ex.selectedfileformat.note | unsafe" ></p>	
+					<p ng-bind-html="ex.mydata.eFun.note | unsafe" ></p>	
 				</div>
-				<div ng-show="ex.isTypeSelected(2)">				
+				<div ng-show="ex.isFunSelected([5,6,7])">				
 					<label>Scale Factor:
 						<input type="number" step="any" name="scalefactor" ng-model="ex.mydata.eSF">
 					</label>
 				</div>
-				<div ng-hide="ex.isTypeSelected(2)">
+				<div ng-show="ex.isFunSelected([0,1,2])">
 					<label>Period:
 						<span class="inline-label">
 						<input type="number" ng-model="ex.mydata.eT" ng-change="ex.mydata.onChange()" step="0.01" name="period"  min="0">
 						<span class="form-label">seconds (s)</span>
 					</label>	
 				</div>
-				<div ng-hide="ex.isTypeSelected(2)">			
+				<div ng-show="ex.isFunSelected([0,1,2])">			
 					<label>Amplitude:
 						<span class="inline-label">
 						<input type="number" step="0.01" name="amplitude" ng-model="ex.mydata.eA" ng-change="ex.mydata.onChange()" min="0">
-						<span class="form-label">(m / s<sup>2</sup>)</span>
+						<span class="form-label"> (m / s<sup>2</sup>) </span>
 					</label>
 				</div>				
 				<div>
@@ -51,28 +50,28 @@ url: /excitation/
 						<span class="form-label">seconds (s)</span>
 					</label>
 				</div>
-				<div ng-hide="ex.isTypeSelected(2)">
+				<div ng-show="ex.isFunSelected([0,1,2])">
 					<label>Horizontal Shift:
 						<span class="inline-label">
 						<input type="number" step="0.01" name="hShift" ng-model="ex.mydata.eHShift" ng-change="ex.mydata.onChange()">
 						<span class="form-label">seconds (s)</span>
 					</label>	
 				</div>
-				<div ng-hide="ex.isTypeSelected(2)">					
+				<div ng-show="ex.isFunSelected([0,1,2])">					
 					<label>Vertical Shift:
 						<span class="inline-label">
 						<input type="number" step="0.01" name="vShift" ng-model="ex.mydata.eVShift" ng-change="ex.mydata.onChange()"> 
 						<span class="form-label">(m / s<sup>2</sup>)</span>
 					</label>
 				</div>
-				<div ng-hide="ex.isTypeSelected(2) && ex.isSubtypeSelected(2)">					
+				<div ng-show="ex.isFunSelected([0,1,2])">					
 					<label>Time Step:
 						<span class="inline-label">
 						<input type="number" ng-model="ex.mydata.edt" step="any" name="dt" min="0.0001"> <!--ng-change="ex.mydata.onChange()"-->
 						<span class="form-label">seconds (s)</span>
 					</label>
 				</div> 
-				<div>
+				<div ng-show="ex.isFunSelected([5,6,7])">
 					<button id="submitbtn" class="dark button" ng-click="ex.mydata.fileupload()">Parse it!</button>
 				</div>		
 			</div>
@@ -82,7 +81,11 @@ url: /excitation/
 			<div class="small-12 medium-8 grid-content" ng-controller="LineCtrl as line">			
 				<linechart data="line.mydata.eSeries" options="line.plotoptions" height="400"></linechart>
 			</div>
-			<div>{{ ex.mydata.eSeries }}</div>
+			<div class="grid-content">    
+				<hr> 
+				<h4>Raw Data:</h4>
+				{{ ex.mydata.eSeries }}
+			</div>
 		</div>
 	</form> 
 </div>

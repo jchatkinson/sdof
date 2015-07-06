@@ -14,27 +14,20 @@
   		var mydata = this;
   		mydata.sT = 0.5;
   		mydata.sDamp = 5;
-  		mydata.eFun = {type:'harmonic',subtype:'sine'}; // default to sine function
+  		mydata.eFun = [];
 	    mydata.eT = 1.0;
 	    mydata.eA = 1.0; 
 	    mydata.edt = 0.01;
 	    mydata.etotalTime = 5.0;
+	    mydata.eExciteTime = 10.0;
 	    mydata.eSF = 1.0;
 	    mydata.eVShift = 0;
 	    mydata.eHShift = 0;
-	    mydata.eSeries = createHarmonicTimeSeries( mydata.eFun.subtype, mydata.eT, mydata.eA, mydata.eHShift, mydata.eVShift, mydata.edt, mydata.etotalTime);
+	    mydata.eSeries = [{x:0,y:0},{x:1,y:0}];
   		mydata.response = analyzeSystem(mydata.sT,mydata.sDamp,mydata.eSeries,mydata.edt,mydata.etotalTime);
 	  	//mydata.onChange = function () {
-	  	//	mydata.eSeries = createHarmonicTimeSeries( mydata.eFun.subtype, mydata.eT, mydata.eA, mydata.eHShift, mydata.eVShift, mydata.edt, mydata.etotalTime);
-	  	//}
-		//mydata.fileupload = function(){
-		//	var userfile = document.getElementById("userfile").files[0];
-	    //    var reader = new FileReader();
-	    //  	reader.onloadend = function(){
-	    //    	mydata.eSeries = reader.result;
-	    //  	}
-	    //  	reader.readAsText(userfile);
-	    //}	  		  	
+	  	//	mydata.eSeries = createHarmonicTimeSeries( mydata.eFun.name, mydata.eT, mydata.eA, mydata.eHShift, mydata.eVShift, mydata.edt, mydata.etotalTime);
+	  	//}	  	
 	  	//mydata.calcResponse = function() {
 	  	//	mydata.response = analyzeSystem(mydata.sT,mydata.sDamp,mydata.eSeries,mydata.edt,mydata.etotalTime);
 	  	//}
@@ -44,7 +37,7 @@
   		.service('mydata', MyData);
 	
 	//define a function that creates a sine time series
-	function createHarmonicTimeSeries(functype,T,A,hShift,vShift,dt,time) {
+	function createTimeSeries(functype,T,A,hShift,vShift,dt,time) {
 		var npts = Math.ceil(time / dt);
 		var myseries = [];
 		switch(functype) {
@@ -63,7 +56,27 @@
 					return A*( 2*Math.floor((t+hShift)/T) - Math.floor(2*(t+hShift)/T) + 1 )+vShift;
 				} 
 				break;
-			} 
+			case 'rampup':
+				console.log('rampup not implemented yet');
+				var eqn = function () { return 0 }
+				break;
+			case 'rampdn':
+				console.log('rampdn not implemented yet');
+				var eqn = function () { return 0 }
+				break;
+			case 'acc':
+				console.log('acc not implemented yet');
+				var eqn = function () { return 0 }
+				break;
+			case 'timeacc':
+				console.log('timeacc not implemented yet');
+				var eqn = function () { return 0 }
+				break;
+			case 'peernga':
+				console.log('peernga not implemented yet');
+				var eqn = function () { return 0 }
+				break;				
+			}; 
 		var yt=0;
 		var i;
 		for (i=0; i<npts-1; i++) {
@@ -137,43 +150,46 @@
 		};
 	}
 	
+	//define a function to parse user file
+	function fileupload(){
+		var userfile = document.getElementById("userfile").files[0];
+	    var reader = new FileReader();
+	    reader.onloadend = function(){
+	    	return reader.result
+	       		
+      	};
+      	reader.readAsText(userfile);
+    }		
+	
 	//define a controller for the Excitation template that uses the mydata service
 	function ExcitationCtrl(mydata) {
     	var vm = this;
     	vm.mydata = mydata;
-    	vm.funtypes = [{name:'harmonic',fullname:'Harmonic Function'},{name:'impulse',fullname:'Impulse Load'},{name:'file',fullname:'Time History File'}];
-    	vm.funsubtypes = function () {
-    		if ( vm.isTypeSelected(0) ) { 
-    			return [{name:'sine', fullname:'Sine Wave'},{name:'saw', fullname:'Sawtooth Wave'},{name:'square', fullname:'Square Wave'}];
-			};
-    		if ( vm.isTypeSelected(1) ) {  
-    			return [{name:'rampup', fullname:'Ramp Up'},{name:'rampdn', fullname:'Ramp Down'}];
-    		};
-    		if ( vm.isTypeSelected(2) ) {  
-    			return [{name:'peer',fullname:'PEER NGA File',note:'Note: The file must formatted as an unaltered <a href="http://ngawest2.berkeley.edu/" target="_blank">PEER NGA Record</a>'},
- 						{name:'acc',fullname:'Acceleration',note:'Note: The file must formatted such that each row contains <code>[acceleration]</code> at a specified time interval'},
- 						{name:'timeacc',fullname:'Time and Acceleration',note:'Note: The file must formatted such that each row contains <code>[time,acceleration]</code>'}];
-    		};    		
-    	};
-	 	vm.isSubtypeSelected = function (checkind) {
-	 		vm.funsubtypes();
-	 		return vm.mydata.eFun.subtype === vm.funsubtypes[checkind].name;
+    	vm.funtypes = [	{name:'sine', fullname:'Sine Wave',type:'Harmonic',note:''},
+    					{name:'saw', fullname:'Sawtooth Wave',type:'Harmonic',note:''},
+    					{name:'square', fullname:'Square Wave',type:'Harmonic',note:''},
+    					{name:'rampup', fullname:'Ramp Up',type:'Impulse',note:''},
+    					{name:'rampdn', fullname:'Ramp Down',type:'Impulse',note:''},
+ 						{name:'acc',fullname:'Acceleration',type:'From File',note:'Note: The file must formatted such that each row contains <code>[acceleration]</code> at a specified time interval'},
+ 						{name:'timeacc',fullname:'Time and Acceleration',type:'From File',note:'Note: The file must formatted such that each row contains <code>[time,acceleration]</code>'},
+ 						{name:'peernga',fullname:'PEER NGA File',type:'From File',note:'Note: The file must formatted as an unaltered <a href="http://ngawest2.berkeley.edu/" target="_blank">PEER NGA Record</a>'}
+ 						];
+	 	vm.mydata.eFun = vm.funtypes[0]; //initialize select to the sine function
+	 	vm.isFunSelected = function(ind){
+	 		if (typeof ind === 'number') {
+	 			return vm.mydata.eFun === vm.funtypes[ind];
+	 		} else {
+	 			var i,isit; 
+	 			isit = false; 
+	 			for (i=0; i<ind.length; i++) {
+	 				isit = (isit || vm.mydata.eFun===vm.funtypes[ind[i]]);
+	 			};
+	 			return isit;
+	 		};
 	 	};
-	 	vm.isTypeSelected = function(checkind){
-	 		return vm.mydata.eFun.type === vm.funtypes[checkind].name;
+	 	vm.onChange = function () {
+	 		mydata.eSeries = createTimeSeries(functype,T,A,hShift,vShift,dt,time);
 	 	};
-	 	vm.fileupload = function(){
-			var userfile = document.getElementById("userfile").files[0];
-	        var reader = new FileReader();
-	      	reader.onloadend = function(){
-	       		vm.mydata.eSeries = reader.result;
-	       		
-	      	};
-	      	reader.readAsText(userfile);
-	    };	  		     	
-    	//mydata.onChange = function () {
-	  	//	mydata.eSeries = createHarmonicTimeSeries( mydata.eFun.subtype, mydata.eT, mydata.eA, mydata.eHShift, mydata.eVShift, mydata.edt, mydata.etotalTime);
-	  	//}
 	};
 	angular
 		.module('application')
