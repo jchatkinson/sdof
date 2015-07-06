@@ -23,5 +23,6 @@
       </div>
       <div ui-view class="grid-content"></div>
     </div> 
+    <p>Version 0.0.1</p>   
   </body>
 </html>
