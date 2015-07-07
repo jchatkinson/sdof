@@ -93,10 +93,10 @@ gulp.task('copy:foundation', function(cb) {
     .pipe(gulp.dest('./build/assets/js'))
   ;
 
-//  // Iconic SVG icons
-//  gulp.src('./bower_components/foundation-apps/iconic/**/*')
-//    .pipe(gulp.dest('./build/assets/img/iconic/'))
-//  ;
+  // Iconic SVG icons
+  gulp.src('./bower_components/foundation-apps/iconic/**/*')
+    .pipe(gulp.dest('./build/assets/img/iconic/'))
+  ;
 
   cb();
 });

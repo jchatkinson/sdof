@@ -83,7 +83,7 @@
 				break;
 			case 'acc': //mydata.procfile is array of acc values [a1,a2,a3,...]
 				var eqn = function (mydata,t) { 
-					if (t <= mydata.eExciteTime && t<=mydata.edt*mydata.procfile.length) {
+					if (mydata.procfile.length > 0 && t <= mydata.eExciteTime && t<=mydata.edt*mydata.procfile.length) {
 						return mydata.eSF*mydata.procfile[Math.round(t / mydata.edt)];
 					} else {
 						return 0;
@@ -92,7 +92,7 @@
 				break;
 			case 'timeacc': //mydata.procfile is array of [t1,a1,t2,a2,..]
 				var eqn = function (mydata,t) { 
-					if (t <= mydata.eExciteTime && t<=mydata.procfile[mydata.procfile.length-1]) {
+					if (mydata.procfile.length > 0 &&  t <= mydata.eExciteTime && t<=mydata.procfile[mydata.procfile.length-1]) {
 						//time could be unevenly spaced, so need to interp values
 						var times = mydata.procfile; 
 						var accs = times;
@@ -120,7 +120,7 @@
 				break;
 			case 'peernga': //procfile is string of acc values [a1,a2,a3,...]
 				var eqn = function (mydata,t) { 
-					if (t <= mydata.eExciteTime && t<=mydata.edt*mydata.procfile.length) {
+					if (mydata.procfile.length > 0 && t <= mydata.eExciteTime && t<=mydata.edt*mydata.procfile.length) {
 						return mydata.eSF*mydata.procfile[Math.round(t / mydata.edt)];
 					} else {
 						return 0;
