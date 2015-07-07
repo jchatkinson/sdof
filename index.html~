@@ -11,8 +11,36 @@
     <script src="/assets/js/app.js"></script>
   </head>
   <body>
+	<div class="menu-group dark">
+	    <div class="menu-group-left">
+	        <ul class="menu-bar primary small-expand medium-condense">
+	            <li ui-sref-active="is-active"><a ui-sref="home"   class=""                               >SDOF</a></li>
+	            <li ui-sref-active="is-active"><a ui-sref="excitation"  class="hide-for-small show-for-medium" >Excitation</a></li>
+	            <li ui-sref-active="is-active"><a ui-sref="system"  class="hide-for-small show-for-medium" >System</a></li>
+	            <li ui-sref-active="is-active"><a ui-sref="response"  class="hide-for-small show-for-medium" >Response</a></li>
+	            <li ui-sref-active="is-active"><a ui-sref="about"  class="hide-for-small show-for-medium" >About</a></li>
+	        </ul>
+	    </div>
+	    <div class="menu-group-right hide-for-medium">
+	        <ul class="icon-left primary menu-bar">
+	            <li><a zf-toggle="dolly-the-menu"><img zf-iconic="" icon="dash" size="small" class="iconic-color-primary">Menu</a></li>
+	        </ul>
+	    </div>
+	</div>
+
+	<!-- off-canvas menu clone of main menu -->
+	<zf-panel id="dolly-the-menu" position="right">
+	    <a href="#" zf-close="" class="close-button">×</a>
+	    <ul class="menu-bar condense vertical">
+	        <li ui-sref-active="is-active"><a ui-sref="excitation"  >Excitation</a></li>
+	        <li ui-sref-active="is-active"><a ui-sref="system"  >System</a></li>
+	        <li ui-sref-active="is-active"><a ui-sref="response"  >Response</a></li>
+	        <li ui-sref-active="is-active"><a ui-sref="about"  >About</a></li>
+	    </ul>
+	</zf-panel>    
+    
     <div class="grid-frame vertical">
-      <div class="grid-content shrink" style="padding: 0;">
+      <!--<div class="grid-content shrink" style="padding: 0;">
         <ul class="dark condense menu-bar">
           <li><a ui-sref="home"><strong>SDOF</strong></a></li>
     		 <li ui-sref-active="is-active"><a ui-sref="excitation">Excitation</a></li>
@@ -21,29 +49,8 @@
      		 <li ui-sref-active="is-active"><a ui-sref="about">About</a></li>
         </ul>
       </div>
-      <div ui-view class="grid-content"></div>
-    </div> 
-    <div class="footer-bottom">
-    <div class="row">
-      <div class="large-4 columns">
-        <ul class="home-social">
-            <li><a href="http://www.twitter.com/ZURB" class="twitter"></a></li>
-            <li><a href="http://www.facebook.com/ZURB" class="facebook"></a></li>
-            <li><a href="/contact" class="mail"></a></li>
-          </ul>
-       </div>
-       <div class="large-8 columns">
-          <a href="#" class="logo regular"></a>
-          <ul class="links">
-            <li><a href="#">About</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">News<span class="show-for-medium-up"> &amp; Events</span></a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Sitemap</a></li>
-         </ul>
-         <p class="copyright">© 1998–2014 Awesome, Inc. All rights reserved.</p>
+     -->
+      <div ui-view class="grid-content"></div>    
       </div>
-    </div>
-  </div>
   </body>
 </html>
