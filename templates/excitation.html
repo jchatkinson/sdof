@@ -6,7 +6,7 @@
    <form ng-controller="ExcitationCtrl as ex">
 		<div>
 			<label>Type of Forcing Function
-				<select ng-model="ex.mydata.eFun" ng-options="funtype as funtype.fullname group by funtype.type for funtype in ex.funtypes" ng-change="ex.updateTS()"></select>
+				<select ng-model="ex.mydata.eFun" ng-options="funtype as funtype.fullname group by funtype.type for funtype in ex.mydata.funtypes" ng-change="ex.updateTS()"></select>
 			</label>
 			<br>
 		</div>   
@@ -14,9 +14,9 @@
 			<div class="small-12 medium-4 grid-content">
 				<div ng-show="ex.isFunSelected([5,6,7])">
 					<label>File Upload:						
-						<input type="file" id="userfile" name="userfile" accept=".txt,.dat,.AT2">
+						<input type="file" on-read-file="ex.showContent($fileContent)" id="userfile" accept=".txt,.dat,.AT2" />
 					</label>		
-					<h6 class="subheader" ng-bind-html="ex.mydata.eFun.note | unsafe" ></h6>	
+					<h6 class="subheader" ng-bind-html="ex.mydata.eFun.note | unsafe" ></h6>
 				</div>
 				<div ng-show="ex.isFunSelected([5,6,7])">				
 					<label>Scale Factor:
@@ -37,14 +37,14 @@
 						<span class="form-label"> (m / s<sup>2</sup>) </span>
 					</label>
 				</div>
-				<div ng-show="ex.isFunSelected([0,1,2,5])">					
+				<div ng-show="ex.isFunSelected([0,1,2,3,4,5])">					
 					<label>Time Step:
 						<span class="inline-label">
 						<input type="number" ng-model="ex.mydata.edt" name="dt" step="0.001" min="0.001"  ng-change="ex.updateTS()">
 						<span class="form-label">seconds (s)</span>
 					</label>
 				</div> 
-				<div ng-hide="ex.isFunSelected([3,4])">
+				<div ng-hide="ex.isFunSelected([])">
 					<label>Excitation Time:
 						<span class="inline-label">
 						<input type="number" step="0.01" name="exciteTime" ng-model="ex.mydata.eExciteTime" ng-change="ex.updateTS()" min="0.01">
@@ -76,17 +76,31 @@
 					<button id="submitbtn" class="dark button" >Parse it!</button>
 				</div>		
 			</div>
-
-			
-			<!-- Preview of the forcing function-->
-			<div class="small-12 medium-8 grid-content" ng-controller="LineCtrl as line">			
-				<linechart data="line.mydata.eSeries" options="line.plotoptions" height="400"></linechart>
+			<div class="small-12 medium-8 grid-content">			
+				<!-- Preview of text file -->
+				<div ng-if="ex.mydata.rawfile && ex.isFunSelected([5,6,7])">
+					<input type="checkbox" id="rawcheckbox" ng-model="ex.rawcheckbox"><label for="rawcheckbox">Show the Raw File</label>
+					<input type="checkbox" id="proccheckbox" ng-model="ex.proccheckbox"><label for="proccheckbox">Show the Processed File</label>
+					<div ng-show="ex.rawcheckbox">
+					<label>Raw File Contents:
+						<textarea cols="75" rows="5"> {{ ex.mydata.rawfile }}</textarea>	
+					</label>
+					</div>
+					<div ng-show="ex.proccheckbox">
+					<label>Processed File Contents:
+						<textarea cols="75" rows="5"> {{ ex.mydata.procfile }}</textarea>	
+					</label>
+					</div>
+				</div>	
+				<!-- Preview of the forcing function-->
+				<div class="small-12 medium-8 grid-content" ng-controller="LineCtrl as line">			
+					<linechart data="line.mydata.eSeries" options="line.plotoptions" height="400"></linechart>
+				</div>			
 			</div>
 			<div class="grid-content">    
 				<hr> 
 				<input type="checkbox" id="datacheckbox" ng-model="ex.datacheckbox"><label for="datacheckbox">Show the raw data</label>
-				<br/> 
-				<br/>
+				<br/> <br/>
 			</div>
 			<div class="grid-content" ng-show="ex.datacheckbox">
 				{{ ex.mydata.eSeries }}
